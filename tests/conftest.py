@@ -15,6 +15,8 @@ def sample_isyntax_file(test_data_dir: Path) -> Path:
     if not file.is_file():
         with Path.open(file, "wb") as f:
             f.write(
-                urllib.request.urlopen("https://isyntax.com/testslide.isyntax").read(),
+                urllib.request.urlopen(
+                    "https://zenodo.org/record/5037046/files/testslide.isyntax",
+                ).read(),
             )
     return file
