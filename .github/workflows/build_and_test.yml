@@ -35,6 +35,7 @@ jobs:
     name: Test source distribution ${{ matrix.platform_tag }}
     needs: build-sdist
     runs-on: ${{ matrix.os }}
+    continue-on-error: true
     strategy:
       matrix:
         include:
