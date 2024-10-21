@@ -1,3 +1,4 @@
+import urllib.request
 from pathlib import Path
 
 import pytest
@@ -12,5 +13,8 @@ def test_data_dir() -> Path:
 def sample_isyntax_file(test_data_dir: Path) -> Path:
     file = test_data_dir / "testslide.isyntax"
     if not file.is_file():
-        pytest.skip("Data file testslide.isyntax is not available")
+        with Path.open(file, "wb") as f:
+            f.write(
+                urllib.request.urlopen("https://isyntax.com/testslide.isyntax").read(),
+            )
     return file
