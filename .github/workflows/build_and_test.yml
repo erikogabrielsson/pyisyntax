@@ -62,14 +62,41 @@ jobs:
           name: sdist-${{ github.sha }}
           path: dist/
       - run: mv dist/pyisyntax-*.tar.gz pyisyntax.tar.gz
-      - name: Build wheels
+      - name: Build wheels macos 13
+        if: matrix.os == 'macos-13'
         uses: pypa/cibuildwheel@v2.16.5
         with:
           package-dir: pyisyntax.tar.gz
           output-dir: dist
         env:
-          # CIBW_ENVIRONMENT_MACOS: CC=/opt/homebrew/bin/gcc-14 LD_LIBRARY_PATH=/usr/local/lib
           CIBW_ENVIRONMENT_MACOS: CC=/usr/local/bin/gcc-14
+          CIBW_CONFIG_SETTINGS_MACOS: "--build-options=--mfloat-abi=hard"
+          CIBW_BUILD_FRONTEND: build
+          CIBW_BUILD: cp310-${{ matrix.platform_tag }}
+          CIBW_PROJECT_REQUIRES_PYTHON: ">=3.10"
+          CIBW_TEST_REQUIRES: tox
+          CIBW_TEST_COMMAND: "tox -e py310,py311,py312 -c {package}/pyproject.toml --installpkg {wheel}"
+      - name: Build wheels macos 14
+        if: matrix.os == 'macos-14'
+        uses: pypa/cibuildwheel@v2.16.5
+        with:
+          package-dir: pyisyntax.tar.gz
+          output-dir: dist
+        env:
+          CIBW_ENVIRONMENT_MACOS: CC=/opt/homebrew/bin/gcc-14 LD_LIBRARY_PATH=/usr/local/lib
+          CIBW_CONFIG_SETTINGS_MACOS: "--build-options=--mfloat-abi=hard"
+          CIBW_BUILD_FRONTEND: build
+          CIBW_BUILD: cp310-${{ matrix.platform_tag }}
+          CIBW_PROJECT_REQUIRES_PYTHON: ">=3.10"
+          CIBW_TEST_REQUIRES: tox
+          CIBW_TEST_COMMAND: "tox -e py310,py311,py312 -c {package}/pyproject.toml --installpkg {wheel}"
+      - name: Build wheels
+        if: matrix.os != 'macos-13' && matrix.os != 'macos-14'
+        uses: pypa/cibuildwheel@v2.16.5
+        with:
+          package-dir: pyisyntax.tar.gz
+          output-dir: dist
+        env:
           CIBW_BUILD_FRONTEND: build
           CIBW_BUILD: cp310-${{ matrix.platform_tag }}
           CIBW_PROJECT_REQUIRES_PYTHON: ">=3.10"
