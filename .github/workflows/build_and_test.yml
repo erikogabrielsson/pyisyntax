@@ -80,6 +80,14 @@ jobs:
           - platform_tag: win_amd64
             os: windows-2022
     steps:
+      - name: Load test images from cache
+        id: cache-test-images
+        uses: actions/cache@v4
+        with:
+          key: test-images-cache-${{ hashFiles('tests/data/DOWNLOAD.txt') }}
+          path: tests/data
+          enableCrossOsArchive: true
+          fail-on-cache-miss: true
       - name: Fetch source distribution
         uses: actions/download-artifact@v4
         with:
@@ -92,7 +100,7 @@ jobs:
           package-dir: pyisyntax.tar.gz
           output-dir: dist
         env:
-          CIBW_ENVIRONMENT_MACOS: CC=/usr/bin/gcc CXX=/usr/bin/g++ LD_LIBRARY_PATH=/usr/local/lib
+          CIBW_ENVIRONMENT_MACOS: CC=/usr/bin/gcc CXX=/usrz/bin/g++ LD_LIBRARY_PATH=/usr/local/lib
           CIBW_BUILD_FRONTEND: build
           CIBW_BUILD: cp310-${{ matrix.platform_tag }}
           CIBW_PROJECT_REQUIRES_PYTHON: ">=3.10"
@@ -122,3 +130,25 @@ jobs:
         uses: actions/upload-artifact/merge@v4
         with:
           name: merged-artifacts-${{ github.sha }}
+
+  cache_test_images:
+    name: cache test images
+    runs-on: ubuntu-latest
+    steps:
+      - name: Prevent cache-miss on windows
+        run: |
+          git config --global core.autocrlf false
+          git config --global core.eol lf
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Load test images from cache
+        id: cache-test-images
+        uses: actions/cache@v4
+        with:
+          key: test-images-cache-${{ hashFiles('tests/data/DOWNLOAD.txt') }}
+          path: tests/data
+          enableCrossOsArchive: true
+      - name: Download test images
+        if: ${{ steps.cache-test-images.outputs.cache-hit != 'true' }}
+        run: |
+          wget https://zenodo.org/record/5037046/files/testslide.isyntax -O tests/data/testslide.isyntax
