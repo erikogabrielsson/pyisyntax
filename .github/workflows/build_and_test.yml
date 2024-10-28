@@ -92,6 +92,7 @@ jobs:
           package-dir: pyisyntax.tar.gz
           output-dir: dist
         env:
+          CIBW_BEFORE_BUILD: CC=gcc
           CIBW_BUILD_FRONTEND: build
           CIBW_BUILD: cp310-${{ matrix.platform_tag }}
           CIBW_PROJECT_REQUIRES_PYTHON: ">=3.10"
