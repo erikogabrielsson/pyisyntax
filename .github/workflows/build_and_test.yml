@@ -87,7 +87,7 @@ jobs:
           path: dist/
       - run: mv dist/pyisyntax-*.tar.gz pyisyntax.tar.gz
       - name: Set up OSX
-        if: matrix.os == 'macos-latest'
+        if: matrix.os == 'macos-13' || matrix.os == 'macos-14'
         run: |
           echo OS_TAG=macos >> $GITHUB_ENV
           echo DYLD_LIBRARY_PATH=/opt/homebrew/lib >> $GITHUB_ENV
