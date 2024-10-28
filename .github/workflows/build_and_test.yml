@@ -66,7 +66,7 @@ jobs:
 
   build-wheels:
     name: Build ${{ matrix.platform_tag }} wheels
-    needs: build-sdist
+    needs: [build-sdist, cache_test_images]
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
