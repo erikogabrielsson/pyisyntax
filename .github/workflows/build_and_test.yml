@@ -67,7 +67,7 @@ jobs:
           package-dir: pyisyntax.tar.gz
           output-dir: dist
         env:
-          CIBW_ENVIRONMENT_MACOS: CC=/opt/homebrew/gcc-14 LD_LIBRARY_PATH=/usr/local/lib
+          CIBW_ENVIRONMENT_MACOS: CC=/opt/homebrew/bin/gcc-14 LD_LIBRARY_PATH=/usr/local/lib
           CIBW_BUILD_FRONTEND: build
           CIBW_BUILD: cp310-${{ matrix.platform_tag }}
           CIBW_PROJECT_REQUIRES_PYTHON: ">=3.10"
