@@ -70,7 +70,6 @@ jobs:
           output-dir: dist
         env:
           CIBW_ENVIRONMENT_MACOS: CC=/usr/local/bin/gcc-14
-          CIBW_CONFIG_SETTINGS_MACOS: "--build-options=--mfloat-abi=hard"
           CIBW_BUILD_FRONTEND: build
           CIBW_BUILD: cp310-${{ matrix.platform_tag }}
           CIBW_PROJECT_REQUIRES_PYTHON: ">=3.10"
@@ -83,8 +82,8 @@ jobs:
           package-dir: pyisyntax.tar.gz
           output-dir: dist
         env:
-          CIBW_ENVIRONMENT_MACOS: CC=/opt/homebrew/bin/gcc-14 LD_LIBRARY_PATH=/usr/local/lib
-          CIBW_CONFIG_SETTINGS_MACOS: "--build-options=--mfloat-abi=hard"
+          CIBW_ENVIRONMENT_MACOS: CC=/opt/homebrew/bin/gcc-14
+          CIBW_CONFIG_SETTINGS_MACOS: "--build-options=--march=armv8.2-a+fp16+simd"
           CIBW_BUILD_FRONTEND: build
           CIBW_BUILD: cp310-${{ matrix.platform_tag }}
           CIBW_PROJECT_REQUIRES_PYTHON: ">=3.10"
