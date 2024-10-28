@@ -62,19 +62,14 @@ jobs:
           name: sdist-${{ github.sha }}
           path: dist/
       - run: mv dist/pyisyntax-*.tar.gz pyisyntax.tar.gz
-      - name: Set up OSX
-        if: matrix.os == 'macos-13'
-        run: |
-          echo OS_TAG=macos >> $GITHUB_ENV
-          echo DYLD_LIBRARY_PATH=/opt/homebrew/lib >> $GITHUB_ENV
-          brew install gcc
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.16.5
         with:
           package-dir: pyisyntax.tar.gz
           output-dir: dist
         env:
-          CIBW_ENVIRONMENT_MACOS: CC=/opt/homebrew/bin/gcc-14 LD_LIBRARY_PATH=/usr/local/lib
+          # CIBW_ENVIRONMENT_MACOS: CC=/opt/homebrew/bin/gcc-14 LD_LIBRARY_PATH=/usr/local/lib
+          CIBW_ENVIRONMENT_MACOS: CC=/usr/local/bin/gcc-14
           CIBW_BUILD_FRONTEND: build
           CIBW_BUILD: cp310-${{ matrix.platform_tag }}
           CIBW_PROJECT_REQUIRES_PYTHON: ">=3.10"
