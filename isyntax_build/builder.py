@@ -42,8 +42,6 @@ def create_ffibuilder() -> FFI:
         platform_sources = []
         extra_compile_args = [
             "-march=armv8.2-a+fp16+simd",
-            "-mfloat-abi=hard",
-            "-mfpu=neon-vfpv4",
         ]
         libraries = []
     else:
