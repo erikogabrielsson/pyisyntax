@@ -33,7 +33,7 @@ jobs:
 
   test-sdist:
     name: Test source distribution
-    needs: build-sdist
+    needs: [build-sdist, cache_test_images]
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
@@ -62,7 +62,7 @@ jobs:
 
   build-wheels:
     name: Build ${{ matrix.platform_tag }} wheels
-    needs: build-sdist
+    needs: [build-sdist, cache_test_images]
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
